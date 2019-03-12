@@ -1,6 +1,6 @@
 public class Button {
-  private int xPos ; // x position
-  private int yPos ; // y position
+  private int x ; // x position
+  private int y; // y position
   private int w; //width
   private int h; // height
   private int r; //rounding
@@ -12,10 +12,10 @@ public class Button {
   private color textColor;
   private int textSize;
 
-  public Button(int xPos, int yPos, int w, int h, int r, color c, color pressedColor, color hoverColor)
+  public Button(int x, int y, int w, int h, int r, color c, color pressedColor, color hoverColor)
   {
-    this.xPos = xPos;
-    this.yPos = yPos;
+    this.x = x;
+    this.y = y;
     this.w = w;
     this.h = h;
     this.r = r;
@@ -23,6 +23,7 @@ public class Button {
     this.hoverColor = hoverColor;
     this.pressedColor = pressedColor;
   }
+  public Button(){}
 
   public void setText(String text, color textColor, int textSize) {
     this.text = text;
@@ -31,7 +32,7 @@ public class Button {
   }
 
   public void display() {
-    if (mousePressed &&mouseX > xPos - w/2 && mouseX < xPos + w/2 && mouseY > yPos - h/2 && mouseY < yPos + h/2) {
+    if (mousePressed &&mouseX > x - w/2 && mouseX < x + w/2 && mouseY > y - h/2 && mouseY < y + h/2) {
       depressed = true;
     } else {
       depressed = false;
@@ -40,18 +41,23 @@ public class Button {
     noStroke();
     if (depressed) {
       fill(pressedColor);
-    } else if (mouseX > xPos - w/2 && mouseX < xPos + w/2 && mouseY > yPos - h/2 && mouseY < yPos + h/2) {
+    } else if (mouseX > x - w/2 && mouseX < x + w/2 && mouseY > y - h/2 && mouseY < y + h/2) {
       fill(hoverColor);
     } else {
       fill(c);
     }
     rectMode(CENTER);
-    rect(xPos, yPos, w, h, r);
+    rect(x, y, w, h, r);
     textAlign(CENTER, CENTER);
     if (text != null) {
       fill(textColor);
       textSize(textSize);
-      text(text, xPos, yPos);
+      text(text, x, y);
     }
   }
+  public boolean depressed(){
+    return depressed;
+  }
+  
+  
 }

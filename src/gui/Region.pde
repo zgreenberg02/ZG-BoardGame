@@ -1,18 +1,12 @@
+import java.awt.Polygon;
+
 public class Region {
   
-  
-  class Vertex{
-    public int x;
-    public int y;
-    public Vertex(int x, int y){
-      this.x = x;
-      this.y = y;
-    }
-  }
-  
+  Polygon shapeHolder = new Polygon();
+  private int points = 0;
   private String type;
-  private ArrayList<Vertex> verticies = new ArrayList<Vertex>();
   private PShape shape;
+  private boolean depressed = false;
   
   public Region(){//String type){ // add later
 
@@ -20,24 +14,43 @@ public class Region {
  
   
   public void addVertex(int x, int y){
-    verticies.add(new Vertex(x,y));
+    shapeHolder.addPoint(x,y);
+    points++;
   }
   
   public void display(){
+    if(contains(mouseX,mouseY)){
+      strokeWeight(3);
+      stroke(0);
+      depressed = false;
+    }else if(contains(mouseX,mouseY)&& mousePressed){
+      depressed = true;
+    }else{
+      depressed = false;
+      noStroke();
+    }
+    noFill();
     shape = createShape();
     shape.beginShape();
-    for(Vertex vert : verticies){
-      shape.vertex(vert.x,vert.y);
+    int[] xPoints = shapeHolder.xpoints; 
+    int[] yPoints = shapeHolder.ypoints;
+    for(int i = 0; i < points; i++){
+      shape.vertex(xPoints[i], yPoints[i]);
     }
     shape.endShape(CLOSE);
     shape(shape);
+  }
+  public boolean contains(int x, int y){
+    return shapeHolder.contains(x,y);
   }
   public String getType() {
     
     return type;
   }
-  
-  
+
+  public boolean depressed (){
+     return depressed;
+  } 
   
   
 }
