@@ -19,12 +19,14 @@ public class Region {
   }
   
   public void display(){
-    if(contains(mouseX,mouseY)){
+    if(contains(mouseX,mouseY)&& mousePressed){
+      depressed = true;
+      stroke(0);
+      strokeWeight(4);
+    }else if(contains(mouseX,mouseY)){
       strokeWeight(3);
       stroke(0);
       depressed = false;
-    }else if(contains(mouseX,mouseY)&& mousePressed){
-      depressed = true;
     }else{
       depressed = false;
       noStroke();
