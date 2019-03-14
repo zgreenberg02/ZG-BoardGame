@@ -50,7 +50,7 @@ public class Region {
     return type;
   }
 
-  public boolean depressed (){
+  public boolean depressed(){
      return depressed;
   } 
   

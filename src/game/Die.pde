@@ -1,11 +1,9 @@
 public class Die {
   int sides;
   public Die(int sides) {
-    
+    this.sides = sides;
   }
-  
   public int roll(){
-    int num  = 0;
-    return num;
+    return round(random(1,sides+.1));
   }
 }

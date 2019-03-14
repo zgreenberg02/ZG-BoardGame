@@ -1,10 +1,11 @@
 
 public abstract class Structure {
   
-  String color;
+  color c;
   Region location;
   
   public abstract String collectRecources();
+  public abstract void display();
 
   public Region getLocation() {
     return location;

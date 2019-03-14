@@ -1,11 +1,13 @@
 
 public class Troop {
-  private String color;
+  private color c;
   private Region location;
   private int quantity;
   
-  public Troop(String color, String location){
-    
+  public Troop(color c, Region location, int quantity){
+    this.c = c;
+    this.location = location;
+    this.quantity = quantity;
     
   }
   public Region getLocation() {
@@ -22,6 +24,12 @@ public class Troop {
 
   public void setQuantity(int quantity) {
     this.quantity = quantity;
+  }
+  public void addTroops(int quantity){
+    this.quantity += quantity;
+  }
+  public void display(){
+    
   }
 
   

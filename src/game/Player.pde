@@ -1,21 +1,29 @@
 public class Player {
-  
-  static Die die = new Die(10);
+
+  Die dice = new Die(10);
   private String name;
-  private String color;
+  private color c;
   private int wood;
   private int ore;
   private int wheat;
   ArrayList <Troop> troops = new ArrayList<Troop>();
   ArrayList <Structure> structures = new ArrayList<Structure>();
-  
-  public Player(String name, String color){
-    
+
+  public Player(String name, color c) {
+    this.name = name;
+    this.c = c;
   }
-  public static int[] rollDice(int times) {
-    //die.roll()
-    return new int[] {};
-    
+
+  public int[] rollDice(int times) {
+    int[] rolls = new int[times];
+    for (int i = 0; i< times; i++) {
+      rolls[0] = dice.roll();
+    }
+
+    return rolls;
+  }
+  public color getColor() {
+    return c;
   }
   public int getWood() {
     return wood;
@@ -36,15 +44,30 @@ public class Player {
     this.wheat = wheat;
   }
   public void move(Troop troop, int quantity, Region location) {
-    
   }
   public void collectRecources() {
-    
   }
   public void build(Structure building) {
     structures.add(building);
   }
   public void trainTroops(Region location, int quantity) {
-    
+    boolean same = false;
+    for(Troop t: troops){
+      if(t.getLocation().equals(location) && !same){
+        t.addTroops(quantity);
+        same = true;
+      }
+    }
+    if(!same){
+      troops.add(new Troop(c, location, quantity));
+    }
+  }
+  public void displayUnits() {
+    for (Structure s : structures) {
+      s.display();
+    }
+     for (Troop t : troops) {
+      t.display();
+    }
   }
 }
