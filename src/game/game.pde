@@ -1,4 +1,4 @@
- //<>// //<>//
+//<>// //<>// //<>// //<>//
 PImage img;
 String menu = "board";
 Region[] regions = new Region[18];
@@ -7,6 +7,7 @@ ArrayList <Player> players  = new ArrayList <Player>();
 Region test = new Region();
 PShape shape;
 boolean started = false;
+int turn = 0;
 
 public void setup() {
 
@@ -19,7 +20,8 @@ public void setup() {
   players.add(new Player("player 2", color(0, 255, 0)));
 }
 
-public void draw() { //<>//
+public void draw() {
+  displayBoard();
   if (menu.equals("start")) {
     startMenu();
   } else if (menu.equals("setup")) {
@@ -27,12 +29,17 @@ public void draw() { //<>//
   } else if (menu.equals("board")) {
     displayBoard();
     game();
+    for (Region r : regions) {
+      r.setReleased(false);
+    }
   } else if (menu.equals("instructions")) {
     instructionsMenu();
   } else {
     println("error");
   }
 }
+
+
 public void createRegions() {
   int regionNumber = 0;
   for (int i = 0; i < regions.length; i++) {
@@ -105,8 +112,6 @@ public void gameSetupMenu() {
   if (menuButtons[4].depressed) {
     menu = "board";
   }
-
-  
 }
 
 public void displayBoard() {
@@ -121,7 +126,7 @@ public void displayBoard() {
 }
 public Region selectRegion() {
   for (Region r : regions) {
-    if (r.depressed()) {
+    if (r.released()) {
       return r;
     }
   }
@@ -129,27 +134,31 @@ public Region selectRegion() {
 }
 
 public void game() {
-  //displayBoard();  // why is this not working //<>//
   fill(255);
   textAlign(LEFT, CENTER);
   textSize(18);
   if (!started) {
-    started = true;
-    for (int i = 0; i < players.size(); i++) {
-      text("Player" + (i+1), 700, 40);
-      text("Select a Starting Region", 700, 60);
-      boolean selecting =  true;
-      while (selecting) {
-        //displayBoard(); //<>//
-        Region selectedRegion = selectRegion();
-        if (selectedRegion != null) {
-          selecting = false;
-          players.get(i).build(new Village(players.get(i).getColor(), selectedRegion));
-          players.get(i).trainTroops(selectedRegion, 3);
-        }
+    text("Player" + (turn+1), 700, 40);
+    text("Select a Starting Region", 700, 60);
+    Region selectedRegion = selectRegion();
+    if (selectedRegion != null) {
+      players.get(turn).build(new Village(players.get(turn).getColor(), selectedRegion));
+      players.get(turn).trainTroops(selectedRegion, 3);
+      if (turn == players.size() - 1) {
+        started = true;
+        turn = 0;
+        println("started");
+      }else{
+        turn++;
       }
     }
   }
-  
-  
+}
+
+void mouseReleased(){
+  for(Region r: regions){
+    if(r.depressed()){
+      r.setReleased(true);
+    }
+  }
 }

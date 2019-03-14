@@ -11,5 +11,7 @@ public class Village extends Structure {
     return location.getType();
   }
   public void display() {
+    fill(c);
+    rect(10,10,10,10);
   }
 }

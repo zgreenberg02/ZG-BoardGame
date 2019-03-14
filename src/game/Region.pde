@@ -7,6 +7,7 @@ public class Region {
   private String type;
   private PShape shape;
   private boolean depressed = false;
+  private boolean released = false;
   
   public Region(){//String type){ // add later
 
@@ -53,6 +54,11 @@ public class Region {
   public boolean depressed(){
      return depressed;
   } 
-  
+  public boolean released(){
+        return released;
+  }
+  public void setReleased(boolean released){
+    this.released = released;
+  }
   
 }
