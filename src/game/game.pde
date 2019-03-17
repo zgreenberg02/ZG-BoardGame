@@ -150,7 +150,7 @@ public void game() {
     text("Select a Starting Region", 700, 60);
     Region selectedRegion = selectRegion();
     if (selectedRegion != null) {
-      players.get(turn).build(new Village(players.get(turn).getColor(), selectedRegion));
+      players.get(turn).build(new Village(players.get(turn).getColor(), selectedRegion,1));
       players.get(turn).trainTroops(selectedRegion, 3);
       if (turn == players.size() - 1) {
         started = true;
