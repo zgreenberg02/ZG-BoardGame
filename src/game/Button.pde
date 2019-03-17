@@ -7,10 +7,11 @@ public class Button {
   private color c;
   private color pressedColor;
   private color hoverColor;
-  private boolean depressed;
+  private boolean depressed = false;
   private String text;
   private color textColor;
   private int textSize;
+  private boolean released;
 
   public Button(int x, int y, int w, int h, int r, color c, color pressedColor, color hoverColor)
   {
@@ -57,6 +58,12 @@ public class Button {
   }
   public boolean depressed(){
     return depressed;
+  }
+  public boolean released() {
+    return released;
+  }
+  public void setReleased(boolean released) {
+    this.released = released;
   }
   
   

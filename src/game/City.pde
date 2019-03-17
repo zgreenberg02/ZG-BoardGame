@@ -13,6 +13,7 @@ public class City extends Structure {
 
   public void display(){
     fill(c);
+    noStroke();
     rectMode(CENTER);
     rect(location.getCityX(),location.getCityY(),15,15);
     if (quantity > 1) {

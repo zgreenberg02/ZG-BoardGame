@@ -50,7 +50,7 @@ public class Player {
   public void build(Structure building) {
     boolean same = false;
     for(Structure s: structures){
-      if(s.getLocation().equals(building.getLocation() ) && s.getClass() == building.getClass() && !same){
+      if(s.getLocation() == building.getLocation() && s.getClass() == building.getClass() && !same){
         s.addStructure(building.getQuantity() );
         same = true;
       }
@@ -62,7 +62,7 @@ public class Player {
   public void trainTroops(Region location, int quantity) {
     boolean same = false;
     for(Troop t: troops){
-      if(t.getLocation().equals(location) && !same){
+      if(t.getLocation() == location && !same){
         t.addTroops(quantity);
         same = true;
       }
@@ -71,6 +71,21 @@ public class Player {
       troops.add(new Troop(c, location, quantity));
     }
   }
+  public boolean inhabits(Region r){
+    for(Troop t: troops){
+        if(t.getLocation() == r ){
+              return true;
+         }
+    } for(Structure s: structures){
+        if(s.getLocation() == r ){
+              return true;
+         }
+    }
+  return false;
+
+}
+  
+  
   public void displayUnits() {
     for (Structure s : structures) {
       s.display();

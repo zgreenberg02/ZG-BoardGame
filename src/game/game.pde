@@ -1,11 +1,13 @@
-PImage img;
-String menu = "board";
+PImage img; //<>//
+String menu = "start";
 Region[] regions = new Region[18];
-Button[] menuButtons = new Button[5];
+Button[] buttons = new Button[8];
 ArrayList <Player> players  = new ArrayList <Player>();
 Region test = new Region();
 PShape shape;
 boolean started = false;
+boolean selectActions = false;
+boolean alreadySelected = false;
 int turn = 0;
 
 public void setup() {
@@ -32,9 +34,12 @@ public void draw() {
     }
   } else if (menu.equals("instructions")) {
     instructionsMenu();
-  } else {
-    println("error");
-  }
+  } for (Button b : buttons) {
+      if(b != null){
+         b.setReleased(false);
+      }
+     
+    }
 }
 
 
@@ -52,9 +57,9 @@ public void createRegions() {
       regions[regionNumber].addVertex(Integer.parseInt(points[0]), Integer.parseInt(points[1]));
     }
   }
-   regionNumber = 0;
-   lines = loadStrings("unitDisplayCords.txt");
-   for (String str : lines) {
+  regionNumber = 0;
+  lines = loadStrings("unitDisplayCords.txt");
+  for (String str : lines) {
     if (str.equals("")) {
       regionNumber++;
     } else {
@@ -65,14 +70,12 @@ public void createRegions() {
 }
 
 public void startMenu() {
-
-  //startMenu Buttons
-  for (int i = 0; i < menuButtons.length; i++) {
-    menuButtons[i] = new Button(width/2, height/2 + 50 + 115 *i, 300, 50, 20, color(0), color(150), color(100));
+  for (int i = 0; i < 3; i++) {
+    buttons[i] = new Button(width/2, height/2 + 50 + 115 *i, 300, 50, 20, color(0), color(150), color(100));
   }
-  menuButtons[0].setText("New Game", color(255, 0, 0), 30);
-  menuButtons[1].setText("How To Play", color(255, 0, 0), 30);
-  menuButtons[2].setText(" ", color(255, 0, 0), 30); 
+  buttons[0].setText("New Game", color(255, 0, 0), 30);
+  buttons[1].setText("How To Play", color(255, 0, 0), 30);
+  buttons[2].setText(" ", color(255, 0, 0), 30); 
 
 
   background(200);
@@ -81,21 +84,20 @@ public void startMenu() {
   textSize(60);
   text("KINGDOMS AND KNIGHTS", width/2, 200);
   for (int i = 0; i < 3; i++) {
-    menuButtons[i].display();
+    buttons[i].display();
   }
-  if (menuButtons[0].depressed) {
-    menu = "setup";
-  } else if (menuButtons[1].depressed) {
+  if (buttons[0].released()) { //<>//
+    menu = "setup"; //<>//
+  } else if (buttons[1].released()) {
     menu = "instructions";
   }
 }
 
 public void instructionsMenu() {
-  //how to play buttons
-  menuButtons[3] = new Button(width/2, height - 100, 130, 30, 20, color(0), color(150), color(100));
-  menuButtons[3].setText("Return To Start", color(255, 0, 0), 15);
+  buttons[3] = new Button(width/2, height - 100, 130, 30, 20, color(0), color(150), color(100));
+  buttons[3].setText("Return To Start", color(255, 0, 0), 15);
   background(200);
-  menuButtons[3].display();
+  buttons[3].display();
   textAlign(CENTER, CENTER);
   fill(0, 0, 0);
   textSize(40);
@@ -105,25 +107,30 @@ public void instructionsMenu() {
   rectMode(CENTER);
   rect(width/2, 90, 350, 4);
 
-  if (menuButtons[3].depressed) {
+  if (buttons[3].released()) {
     menu = "start";
   }
 }
 public void gameSetupMenu() {
-  menuButtons[4] = new Button(width/2, height - 50, 130, 30, 20, color(0), color(150), color(100));
-  menuButtons[4].setText("Start", color(255, 0, 0), 15);
+  buttons[4] = new Button(width/2, height - 50, 130, 30, 20, color(0), color(150), color(100));
+  buttons[4].setText("Start", color(255, 0, 0), 15);
   background(200);
-  menuButtons[4].display();
+  buttons[4].display();
   //Spinner test = new Spinner(400,400,1);
   //test.display();
 
-  if (menuButtons[4].depressed) {
+  if (buttons[4].released()) {
     menu = "board";
   }
 }
 
 public void displayBoard() {
-
+  buttons[5] = new Button(830, 100, 130, 30, 20, color(0), color(150), color(100));
+  buttons[5].setText("Move Troops", color(255, 0, 0), 15);
+  buttons[6] = new Button(830, 140, 130, 30, 20, color(0), color(150), color(100));
+  buttons[6].setText("Train Troops", color(255, 0, 0), 15);
+  buttons[7] = new Button(830, 180, 130, 30, 20, color(0), color(150), color(100));
+  buttons[7].setText("Build Structures", color(255, 0, 0), 15);
   image(img, 0, 0);
   for (Region r : regions) {
     r.display();
@@ -131,6 +138,13 @@ public void displayBoard() {
   for (Player p : players) {
     p.displayUnits();
   }
+  
+  if(selectActions){
+    buttons[5].display();
+    buttons[6].display();
+    buttons[7].display();
+  }
+  
 }
 public Region selectRegion() {
   for (Region r : regions) {
@@ -145,28 +159,62 @@ public void game() {
   fill(255);
   textAlign(LEFT, CENTER);
   textSize(18);
-  if (!started) {
-    text("Player" + (turn+1), 700, 40);
-    text("Select a Starting Region", 700, 60);
+  if (!started) { 
+    text("Player " + (turn+1), 700, 40);
+    if(alreadySelected){
+      text("Select a Different Region", 700, 80);
+      text("Already Selected", 700, 60);
+    }else{
+      text("Select a Starting Region", 700, 60);
+    }
     Region selectedRegion = selectRegion();
     if (selectedRegion != null) {
-      players.get(turn).build(new City(players.get(turn).getColor(), selectedRegion,2)); //<>//
-      players.get(turn).build(new Village(players.get(turn).getColor(), selectedRegion,2));
-      players.get(turn).trainTroops(selectedRegion, 3);
-      if (turn == players.size() - 1) {
-        started = true;
-        turn = 0;
+      if (playerInhabits(selectedRegion) == players.get(turn) || playerInhabits(selectedRegion) == null) {
+        alreadySelected = false;
+        players.get(turn).build(new City(players.get(turn).getColor(), selectedRegion, 2));   // for testing
+        players.get(turn).build(new Village(players.get(turn).getColor(), selectedRegion, 1));
+        players.get(turn).trainTroops(selectedRegion, 3);
+        if (turn == players.size() - 1) {
+          started = true;
+          turn = 0;
+          selectActions = true;
+        }else {
+          turn++;
+        }
       }else{
-        turn++;
+         alreadySelected = true;
       }
     }
+  }else{
+    text("Player " + (turn+1), 700, 40);
+    if(selectActions){
+      text("Select an Action:", 700, 60);
+    }
+    
+    
   }
 }
+public Player playerInhabits(Region r) {
+  for (Player p : players) {
+    if (p.inhabits(r)) {
+      return p;
+    }
+  }
+  return null;
+}
 
-void mouseReleased(){
-  for(Region r: regions){
-    if(r.depressed()){
+
+void mouseReleased() {
+  for (Region r : regions) {
+    if (r.depressed()) {
       r.setReleased(true);
+    }
+  }
+  for (Button b : buttons) { //<>//
+    if(b != null){
+      if (b.depressed()) { //<>//
+      b.setReleased(true); //<>//
+    }
     }
   }
 }

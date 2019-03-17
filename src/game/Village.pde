@@ -13,6 +13,7 @@ public class Village extends Structure {
   }
   public void display() {
     fill(c);
+    noStroke();
     int x = location.getVillageX();
     int y = location.getVillageY();
     triangle(x, y-9, x+9, y+9, x-9, y+9);
