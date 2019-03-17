@@ -30,7 +30,13 @@ public class Troop {
   }
   public void display(){
     fill(c);
-    ellipse(location.getTroopX(), location.getTroopY(),10,10);
+    ellipse(location.getTroopX(), location.getTroopY(),15,15);
+        textAlign(CENTER, CENTER);
+    if (quantity > 1) {
+      fill(0);
+      textSize(12);
+      text(quantity, location.getTroopX(), location.getTroopY()-1);
+    }
   }
 
   

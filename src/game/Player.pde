@@ -48,7 +48,16 @@ public class Player {
   public void collectRecources() {
   }
   public void build(Structure building) {
-    structures.add(building);
+    boolean same = false;
+    for(Structure s: structures){
+      if(s.getLocation().equals(building.getLocation() ) && s.getClass() == building.getClass() && !same){
+        s.addStructure(building.getQuantity() );
+        same = true;
+      }
+    }
+    if(!same){
+      structures.add(building);
+    }
   }
   public void trainTroops(Region location, int quantity) {
     boolean same = false;

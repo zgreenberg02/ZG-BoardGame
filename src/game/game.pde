@@ -46,10 +46,10 @@ public void createRegions() {
   String[] lines = loadStrings("regionShapes.txt");
   for (String str : lines) {
     if (str.equals("")) {
-      regionNumber++; //<>//
+      regionNumber++;
     } else {
       String[] points = str.split(" ");
-      regions[regionNumber].addVertex(Integer.parseInt(points[0]), Integer.parseInt(points[1])); //<>//
+      regions[regionNumber].addVertex(Integer.parseInt(points[0]), Integer.parseInt(points[1]));
     }
   }
    regionNumber = 0;
@@ -150,7 +150,8 @@ public void game() {
     text("Select a Starting Region", 700, 60);
     Region selectedRegion = selectRegion();
     if (selectedRegion != null) {
-      players.get(turn).build(new Village(players.get(turn).getColor(), selectedRegion,1));
+      players.get(turn).build(new City(players.get(turn).getColor(), selectedRegion,2)); //<>//
+      players.get(turn).build(new Village(players.get(turn).getColor(), selectedRegion,2));
       players.get(turn).trainTroops(selectedRegion, 3);
       if (turn == players.size() - 1) {
         started = true;

@@ -15,6 +15,11 @@ public class Village extends Structure {
     fill(c);
     int x = location.getVillageX();
     int y = location.getVillageY();
-    triangle(x,y-5,x+5,y+5,x-5,y+5);
+    triangle(x, y-9, x+9, y+9, x-9, y+9);
+    if (quantity > 1) {
+      fill(0);
+      textSize(11);
+      text(quantity, x, y);
+    }
   }
 }

@@ -13,7 +13,13 @@ public class City extends Structure {
 
   public void display(){
     fill(c);
-    rect(location.getCityX(),location.getCityY(),10,10);
+    rectMode(CENTER);
+    rect(location.getCityX(),location.getCityY(),15,15);
+    if (quantity > 1) {
+      fill(0);
+      textSize(12);
+      text(quantity, location.getCityX(), location.getCityY()-1);
+    }
   }
 
 }
