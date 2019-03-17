@@ -29,7 +29,8 @@ public class Troop {
     this.quantity += quantity;
   }
   public void display(){
-    
+    fill(c);
+    ellipse(location.getTroopX(), location.getTroopY(),10,10);
   }
 
   

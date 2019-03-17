@@ -12,6 +12,7 @@ public class Village extends Structure {
   }
   public void display() {
     fill(c);
-    rect(10,10,10,10);
+    triangle();
+    rect(location.getVillageX(),location.getVillageY(),10,10);
   }
 }

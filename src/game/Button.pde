@@ -23,7 +23,7 @@ public class Button {
     this.hoverColor = hoverColor;
     this.pressedColor = pressedColor;
   }
-  public Button(){}
+ // public Button(){}
 
   public void setText(String text, color textColor, int textSize) {
     this.text = text;

@@ -1,4 +1,3 @@
-//<>// //<>// //<>// //<>//
 PImage img;
 String menu = "board";
 Region[] regions = new Region[18];
@@ -12,7 +11,6 @@ int turn = 0;
 public void setup() {
 
   size(927, 750);
-  // surface.setResizable(true);
   img = loadImage("gameBoard.jpg");
   img.resize(0, height);
   createRegions();
@@ -48,10 +46,20 @@ public void createRegions() {
   String[] lines = loadStrings("regionShapes.txt");
   for (String str : lines) {
     if (str.equals("")) {
+      regionNumber++; //<>//
+    } else {
+      String[] points = str.split(" ");
+      regions[regionNumber].addVertex(Integer.parseInt(points[0]), Integer.parseInt(points[1])); //<>//
+    }
+  }
+   regionNumber = 0;
+   lines = loadStrings("unitDisplayCords.txt");
+   for (String str : lines) {
+    if (str.equals("")) {
       regionNumber++;
     } else {
       String[] points = str.split(" ");
-      regions[regionNumber].addVertex(Integer.parseInt(points[0]), Integer.parseInt(points[1]));
+      regions[regionNumber].setUnitDisplayCords(Integer.parseInt(points[0]), Integer.parseInt(points[1]), Integer.parseInt(points[2]), Integer.parseInt(points[3]), Integer.parseInt(points[4]), Integer.parseInt(points[5])  );
     }
   }
 }
@@ -147,7 +155,6 @@ public void game() {
       if (turn == players.size() - 1) {
         started = true;
         turn = 0;
-        println("started");
       }else{
         turn++;
       }
