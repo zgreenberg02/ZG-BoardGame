@@ -6,11 +6,6 @@ public class Village extends Structure {
     this. location = location;
     this.quantity = quantity;
   }
-
-  public String collectRecources() {
-
-    return location.getType();
-  }
   public void display() {
     fill(c);
     noStroke();

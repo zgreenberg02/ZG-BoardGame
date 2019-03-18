@@ -15,7 +15,8 @@ public class Region {
   private int villageX;
   private int villageY;
 
-  public Region() {//String type){ // add later
+  public Region(String type){ 
+    this.type = type;
   }
 
 

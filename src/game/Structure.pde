@@ -5,8 +5,14 @@ public abstract class Structure {
   Region location;
   int quantity;
 
-  public abstract String collectRecources();
+  
   public abstract void display();
+  
+  public String collectRecources(){
+    return location.getType();
+  }
+  
+  
   
   public int getQuantity() {
     return quantity;
