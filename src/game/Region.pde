@@ -14,9 +14,11 @@ public class Region {
   private int troopY;
   private int villageX;
   private int villageY;
-
-  public Region(String type){ 
+  private int number;
+  
+  public Region(String type, int number){ 
     this.type = type;
+    this.number = number;
   }
 
 
