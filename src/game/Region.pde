@@ -15,6 +15,7 @@ public class Region {
   private int villageX;
   private int villageY;
   private int number;
+  private ArrayList <Integer> connections = new ArrayList<Integer>();
   
   public Region(String type, int number){ 
     this.type = type;
@@ -25,6 +26,9 @@ public class Region {
   public void addVertex(int x, int y) {
     shapeHolder.addPoint(x, y);
     points++;
+  }
+  public void addConnection(int num) {
+    connections.add(num);
   }
 
   public void display() {
@@ -68,7 +72,13 @@ public class Region {
   public void setReleased(boolean released) {
     this.released = released;
   }
-
+  public boolean nextTo(Region r) {
+    if(connections.contains(r.number) ){
+      return true;
+    }else{
+      return false;
+    }
+  }
   public void setUnitDisplayCords(int cityX,int cityY,int troopX,int troopY,int villageX,int villageY) {
     this.cityX = cityX;
     this.cityY = cityY;
@@ -77,12 +87,16 @@ public class Region {
     this.villageX = villageX;
     this.villageY = villageY;
   }
+  //public int getNumber(){
+  //  return number;
+  //}
   public int getTroopX(){
     return troopX;
   }
   public int getTroopY(){
     return troopY;
   }
+  
   public int getCityX(){
     return cityX;
   }

@@ -6,8 +6,8 @@ public class Player {
   private int wood;
   private int ore;
   private int wheat;
-  ArrayList <Troop> troops = new ArrayList<Troop>();
-  ArrayList <Structure> structures = new ArrayList<Structure>();
+  private ArrayList <Troop> troops = new ArrayList<Troop>();
+  private ArrayList <Structure> structures = new ArrayList<Structure>();
 
   public Player(String name, color c) {
     this.name = name;
@@ -46,28 +46,28 @@ public class Player {
   public void move(Troop troop, int quantity, Region location) {
   }
   public void collectRecources() {
-    for(Structure s: structures){ //<>//
-      if(s != null){ //<>//
-        switch (s.collectRecources()){ //<>//
+    for(Structure s: structures){
+      if(s != null){
+        switch (s.collectRecources()){
         case "wheat":
           if(s instanceof City){
-            wheat+=2;
+            wheat+=2*s.getQuantity();
           }else{
-            wheat++;
+            wheat+= s.getQuantity();
           }
         break;
         case "wood":
         if(s instanceof City){
-            wood+=2;
+            wood+=2*s.getQuantity();
           }else{
-            wood++;
+            wood+=s.getQuantity();
           }
         break;
         case "ore":
         if(s instanceof City){
-            ore+=2;
+            ore+=2*s.getQuantity();
           }else{
-            ore++;
+            ore+= s.getQuantity();
           }
         break;
       }
@@ -100,6 +100,13 @@ public class Player {
       troops.add(new Troop(c, location, quantity));
     }
   }
+  public void moveTroops(Region r1,Region r2, int num ){
+    if(num > 0){
+      trainTroops(r1,-num);
+      trainTroops(r2,num);
+    }
+  }
+  
   public boolean inhabits(Region r) {
     if (hasTroops(r)|| hasStrucutres(r)) {
       return true;
@@ -114,6 +121,15 @@ public class Player {
       }
     }
     return false;
+  }
+  public int troopsIn(Region r){
+    int num = 0;
+    for (Troop t : troops) {
+      if (t.getLocation() == r ) {
+        num += t.getQuantity();
+      }
+    }
+    return num;
   }
   public boolean hasStrucutres(Region r) {
     for (Structure s : structures) {

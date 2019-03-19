@@ -1,5 +1,5 @@
 public class Die {
-  int sides;
+  private int sides;
   public Die(int sides) {
     this.sides = sides;
   }
