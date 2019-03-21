@@ -30,14 +30,16 @@ public class Troop {
     this.quantity += quantity;
   }
   public void display() {
-    noStroke();
-    fill(c);
-    ellipse(location.getTroopX(), location.getTroopY(), 15, 15);
-    textAlign(CENTER, CENTER);
-    if (quantity > 1) {
-      fill(0);
-      textSize(12);
-      text(quantity, location.getTroopX(), location.getTroopY()-1);
+    if (location != null && quantity >0 ) {
+      noStroke();
+      fill(c);
+      ellipse(location.getTroopX(), location.getTroopY(), 15, 15);
+      textAlign(CENTER, CENTER);
+      if (quantity > 1) {
+        fill(0);
+        textSize(12);
+        text(quantity, location.getTroopX(), location.getTroopY()-1);
+      }
     }
   }
 }

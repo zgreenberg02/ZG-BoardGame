@@ -5,7 +5,7 @@ public class Player {
   private color c;
   private int wood;
   private int ore;
-  private int wheat;
+  private int wheat = 20;
   private ArrayList <Troop> troops = new ArrayList<Troop>();
   private ArrayList <Structure> structures = new ArrayList<Structure>();
 

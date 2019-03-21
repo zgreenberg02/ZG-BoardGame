@@ -5,6 +5,7 @@
 // destroying buildings
 // highlight selecting region
 // conflict
+///moing all troops
 
 import java.awt.Desktop;
 import java.io.File;
@@ -13,7 +14,7 @@ import java.io.IOException;
 PImage img;
 String menu = "board";
 Region[] regions = new Region[18];
-Button[] buttons = new Button[9];
+Button[] buttons = new Button[12];
 Spinner test;
 ArrayList <Player> players  = new ArrayList <Player>();
 PShape shape;
@@ -26,6 +27,7 @@ boolean build = false;
 boolean selectingRegion = true;
 boolean selectingRegion2 = false;
 boolean choosingNumber = false;
+boolean selectStructure = false;
 int turn = 0;
 int numberLimit;
   Region selectedRegion;
@@ -58,6 +60,12 @@ public void setup() {
   buttons[7].setText("Build Structures", color(255), 15);
   buttons[8] = new Button(120, 120, 50, 30, 20, color(0), color(150), color(100));
   buttons[8].setText("ok", color(255), 15);
+  buttons[9] = new Button(90, 120, 130, 30, 20, color(0), color(150), color(100));
+  buttons[9].setText("Village", color(255), 15);
+  buttons[10] = new Button(90, 160, 130, 30, 20, color(0), color(150), color(100));
+  buttons[10].setText("Castle", color(255), 15);
+   buttons[11] = new Button(90, 200, 130, 30, 20, color(0), color(150), color(100));
+  buttons[11].setText("None", color(255), 15);
   test = new Spinner(50,120);
 }
 
@@ -210,6 +218,11 @@ public void displayBoard() {
     buttons[8].display();
     test.display();
   }
+  if(selectStructure){
+    buttons[10].display();
+    buttons[9].display();
+    buttons[11].display();
+  }
 }
 public Region selectRegion() {
   for (Region r : regions) {
@@ -220,6 +233,9 @@ public Region selectRegion() {
   return null;
 }
 public void advanceTurn() {
+  for(int i = 0; i < players.size(); ){
+    
+  }
   if (turn == players.size() - 1) {
     turn = 0;
     selectActions = true;
@@ -229,6 +245,9 @@ public void advanceTurn() {
     selectActions = true;
     players.get(turn).collectRecources();
   }
+  move = false;
+  train = false;
+  build = false;
 }
 
 public void game() {
@@ -287,6 +306,7 @@ public void game() {
       } else if (buttons[7].released()) {
         selectActions = false;
         build = true;
+        selectingRegion = true;
       }
     } else if (move) {
       move();
@@ -313,7 +333,7 @@ public void move() {
     selectedRegion = selectRegion();
     if (selectedRegion != null) {
       if (players.get(turn).hasTroops(selectedRegion)) {
-        numberLimit = players.get(turn).troopsIn(selectedRegion);
+         numberLimit = players.get(turn).troopsIn(selectedRegion);
          selectingRegion = false;
          choosingNumber = true;
          
@@ -330,14 +350,14 @@ public void move() {
     
   }else if(selectingRegion2){
     text("Select a Region to Move", 20, 60);
-    text("Troops to", 20, 80);
+    text("Troops to", 20, 80); //<>//
     selectedRegion2 = selectRegion();
     if(selectedRegion2 != null){
       if (selectedRegion2.nextTo(selectedRegion)) {
         if(playerInhabits(selectedRegion2) == players.get(turn) || playerInhabits(selectedRegion2) == null ){
          
-         players.get(turn).moveTroops(selectedRegion,selectedRegion2, test.getNumber()); //<>//
-         selectingRegion2 = false; //<>//
+         players.get(turn).moveTroops(selectedRegion,selectedRegion2, test.getNumber());
+         selectingRegion2 = false;
          advanceTurn();
          
       }else {
@@ -353,26 +373,65 @@ public void train() {
     text("Select a Region to Train", 20, 60);
     text("Troops In ", 20, 80);
 
-    Region selectedRegion = selectRegion();
+    selectedRegion = selectRegion();
     if (selectedRegion != null) {
       if (players.get(turn).hasStrucutres(selectedRegion)) {
         selectingRegion = false;
         choosingNumber = true;
-        numberLimit = int(players.get(turn).getWheat()/2); //<>//
+        numberLimit = int(players.get(turn).getWheat()/2);
       }
     }
-  }else if(choosingNumber){                     /////
+  }else if(choosingNumber){ 
     text("Select the number of", 20, 60);
     text("Troops to Train", 20, 80);
     
     if(buttons[8].released()){
-      players.get(turn).trainTroops(selectedRegion, test.getNumber());
+      if(test.getNumber() > 0){
+        players.get(turn).trainTroops(selectedRegion, test.getNumber());
+        players.get(turn).setWheat(players.get(turn).getWheat() - 2*test.getNumber() );
+      }
       choosingNumber = false;
       advanceTurn();
     }
   }
 }
 public void build() {
+  if (selectingRegion) {
+    text("Select a Region to", 20, 70);
+    text("Build In ", 20, 90);
+
+    selectedRegion = selectRegion();
+    if (selectedRegion != null) {
+      if (players.get(turn).hasTroops(selectedRegion)) {
+        selectingRegion = false;
+        selectStructure = true;
+      }
+    }
+  }else if(selectStructure){
+    text("Select a Region to", 20, 60);
+    text("Build in", 20, 80);
+    if(buttons[9].released() ){ // pay
+      players.get(turn).build(new Village(players.get(turn).getColor(), selectedRegion, 1));
+      players.get(turn).setWood(players.get(turn).getWood() - 2 );
+      players.get(turn).setWheat(players.get(turn).getWheat() - 1 );
+      selectStructure = false;
+      advanceTurn();
+      
+    }else if(buttons[10].released()){ // pay
+      players.get(turn).build(new City(players.get(turn).getColor(), selectedRegion, 1));
+      players.get(turn).setOre(players.get(turn).getOre() - 4 );
+      players.get(turn).setWood(players.get(turn).getWood() - 3 );
+      selectStructure = false;
+      advanceTurn();
+    }else if(buttons[11].released()){
+      selectStructure = false;
+      advanceTurn();
+    }
+  }
+  
+  
+  
+  
 }
 public void mouseReleased() {
   if (menu.equals("board")) {
