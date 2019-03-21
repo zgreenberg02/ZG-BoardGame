@@ -4,7 +4,7 @@ class Spinner {
 
   private int x ; // x position
   private int y; // y position
-  private int number = 1;
+  private int number = 0;
   private boolean upDepressed;
   private boolean downDepressed;
   
@@ -79,5 +79,8 @@ class Spinner {
   }
   public int getNumber(){
     return number;
+  }
+  public void setNumber(int num){
+   number = num; 
   }
 }

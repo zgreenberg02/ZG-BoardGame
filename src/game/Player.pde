@@ -1,3 +1,5 @@
+import java.util.Iterator;
+
 public class Player {
 
   private String name;
@@ -12,8 +14,10 @@ public class Player {
     this.name = name;
     this.c = c;
   }
-
- public color getColor() {
+  public String getName(){
+    return name;
+  }
+  public color getColor() {
     return c;
   }
   public int getWood() {
@@ -37,34 +41,32 @@ public class Player {
   public void move(Troop troop, int quantity, Region location) {
   }
   public void collectRecources() {
-    for(Structure s: structures){
-      if(s != null){
-        switch (s.collectRecources()){
+    for (Structure s : structures) {
+      if (s != null) {
+        switch (s.collectRecources()) {
         case "wheat":
-          if(s instanceof City){
+          if (s instanceof City) {
             wheat+=2*s.getQuantity();
-          }else{
+          } else {
             wheat+= s.getQuantity();
           }
-        break;
+          break;
         case "wood":
-        if(s instanceof City){
+          if (s instanceof City) {
             wood+=2*s.getQuantity();
-          }else{
+          } else {
             wood+=s.getQuantity();
           }
-        break;
+          break;
         case "ore":
-        if(s instanceof City){
+          if (s instanceof City) {
             ore+=2*s.getQuantity();
-          }else{
+          } else {
             ore+= s.getQuantity();
           }
-        break;
+          break;
+        }
       }
-      }
-      
-      
     }
   }
   public void build(Structure building) {
@@ -79,18 +81,22 @@ public class Player {
       structures.add(building);
     }
   }
-  
-  public void removeStrctrues(Region r){
-    for(Structure s: structures){
-      if(s.getLocation() == r){
-        structures.remove(s);
+
+  public void removeStructures(Region r) {
+    Iterator itr = structures.iterator();
+     while (itr.hasNext()) {
+      Structure s = (Structure)itr.next();
+      if (s.getLocation() == r) {
+        itr.remove();
       }
     }
+
   }
-  
-  
+
+
   public void trainTroops(Region location, int quantity) {
     boolean same = false;
+    
     for (Troop t : troops) {
       if (t.getLocation() == location && !same) {
         t.addTroops(quantity);
@@ -100,24 +106,23 @@ public class Player {
     if (!same) {
       troops.add(new Troop(c, location, quantity));
     }
-    
-    
-    for (Troop t : troops) {   /// fix so not concurntly movifying
-      if(t.getQuantity() < 1){
-        troops.remove(t);
+    Iterator itr = troops.iterator();
+    while (itr.hasNext()) {
+      Troop t = (Troop)itr.next();
+      if (t.getQuantity() < 1) {
+        itr.remove();
       }
     }
-    
   }
-  public void moveTroops(Region r1,Region r2, int num ){
-    if(num > 0){
-      trainTroops(r1,-num);
-      trainTroops(r2,num);
+  public void moveTroops(Region r1, Region r2, int num ) {
+    if (num > 0) {
+      trainTroops(r1, -num);
+      trainTroops(r2, num);
     }
   }
-  
+
   public boolean inhabits(Region r) {
-    if (hasTroops(r)|| hasStrucutres(r)) {
+    if (hasTroops(r)|| hasStructuresIn(r)) {
       return true;
     } else {
       return false;
@@ -131,7 +136,7 @@ public class Player {
     }
     return false;
   }
-  public int troopsIn(Region r){
+  public int troopsIn(Region r) {
     int num = 0;
     for (Troop t : troops) {
       if (t.getLocation() == r ) {
@@ -140,7 +145,7 @@ public class Player {
     }
     return num;
   }
-  public boolean hasStrucutres(Region r) {
+  public boolean hasStructuresIn(Region r) {
     for (Structure s : structures) {
       if (s.getLocation() == r ) {
         return true;
@@ -148,11 +153,27 @@ public class Player {
     }
     return false;
   }
-  public boolean hasUnits(){
-    if(troops.isEmpty() && structures.isEmpty() ){
+  public boolean hasStructures() {
+    
+      if (structures.isEmpty()) {
+        return false;
+      }
+    return true;
+  }
+  public boolean hasTroops() {
+    
+      if (troops.isEmpty()) {
+        return false;
+      }
+    return true;
+  }
+  public boolean hasUnits() {
+    if (troops.isEmpty() && structures.isEmpty() ) {
       return false;
     }
+    else{
     return true;
+    }
   }
   public void displayUnits() {
     for (Structure s : structures) {

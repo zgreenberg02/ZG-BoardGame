@@ -8,6 +8,7 @@ public class Region {
   private PShape shape;
   private boolean depressed = false;
   private boolean released = false;
+  private boolean selected;
   private int cityX;
   private int cityY;
   private int troopX;
@@ -30,7 +31,9 @@ public class Region {
   public void addConnection(int num) {
     connections.add(num);
   }
-
+  public void setSelected(boolean sel){
+    selected = sel;
+  }
   public void display() {
     if (contains(mouseX, mouseY)&& mousePressed) {
       depressed = true;
@@ -43,6 +46,10 @@ public class Region {
     } else {
       depressed = false;
       noStroke();
+    }
+    if(selected){ //<>//
+      stroke(0); //<>//
+      strokeWeight(3);
     }
     noFill();
     shape = createShape();
