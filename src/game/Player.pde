@@ -1,6 +1,5 @@
 public class Player {
 
-  Die dice = new Die(10);
   private String name;
   private color c;
   private int wood;
@@ -14,15 +13,7 @@ public class Player {
     this.c = c;
   }
 
-  public int[] rollDice(int times) {
-    int[] rolls = new int[times];
-    for (int i = 0; i< times; i++) {
-      rolls[0] = dice.roll();
-    }
-
-    return rolls;
-  }
-  public color getColor() {
+ public color getColor() {
     return c;
   }
   public int getWood() {
@@ -88,6 +79,16 @@ public class Player {
       structures.add(building);
     }
   }
+  
+  public void removeStrctrues(Region r){
+    for(Structure s: structures){
+      if(s.getLocation() == r){
+        structures.remove(s);
+      }
+    }
+  }
+  
+  
   public void trainTroops(Region location, int quantity) {
     boolean same = false;
     for (Troop t : troops) {
@@ -99,6 +100,14 @@ public class Player {
     if (!same) {
       troops.add(new Troop(c, location, quantity));
     }
+    
+    
+    for (Troop t : troops) {   /// fix so not concurntly movifying
+      if(t.getQuantity() < 1){
+        troops.remove(t);
+      }
+    }
+    
   }
   public void moveTroops(Region r1,Region r2, int num ){
     if(num > 0){
@@ -138,6 +147,12 @@ public class Player {
       }
     }
     return false;
+  }
+  public boolean hasUnits(){
+    if(troops.isEmpty() && structures.isEmpty() ){
+      return false;
+    }
+    return true;
   }
   public void displayUnits() {
     for (Structure s : structures) {

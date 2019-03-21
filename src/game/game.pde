@@ -1,11 +1,17 @@
-// winning //<>// //<>//
-// back to instructions
+// winning  //<>// //<>//
+//  instructions
 // costs
 // change spinner form test.
 // destroying buildings
 // highlight selecting region
-// conflict
+// conflict -  happens automotically, no retreat
 ///moing all troops
+// test conflict and removing players
+
+// ask kaptee about ==
+// choosing number of players
+// player eliminated  - printing whose turn it is
+
 
 import java.awt.Desktop;
 import java.io.File;
@@ -30,9 +36,10 @@ boolean choosingNumber = false;
 boolean selectStructure = false;
 int turn = 0;
 int numberLimit;
-  Region selectedRegion;
-  Region selectedRegion2;
-
+Region selectedRegion;
+Region selectedRegion2;
+final int diceSides = 10;
+final int hitLimit = 8;
 
 public void setup() {
   size(927, 750);
@@ -64,9 +71,9 @@ public void setup() {
   buttons[9].setText("Village", color(255), 15);
   buttons[10] = new Button(90, 160, 130, 30, 20, color(0), color(150), color(100));
   buttons[10].setText("Castle", color(255), 15);
-   buttons[11] = new Button(90, 200, 130, 30, 20, color(0), color(150), color(100));
+  buttons[11] = new Button(90, 200, 130, 30, 20, color(0), color(150), color(100));
   buttons[11].setText("None", color(255), 15);
-  test = new Spinner(50,120);
+  test = new Spinner(50, 120);
 }
 
 public void draw() {
@@ -159,8 +166,8 @@ public void instructionsMenu() {
   buttons[3].display();
   textAlign(CENTER, CENTER);
   fill(0, 0, 0);
-  textSize(40);
-  text("How to Play", width/2, 60);
+  textSize(40); //<>//
+  text("How to Play", width/2, 60); //<>//
   textSize(15);
   text("(add rules here)", width/2, 150);
   rectMode(CENTER);
@@ -169,27 +176,17 @@ public void instructionsMenu() {
   if (buttons[3].released()) {
     menu = "start";
   }
-    //println(dataPath(""));
-    
-    //try { //only do once
-    //    Desktop desktop = Desktop.getDesktop();
-    //    File file = new File(dataPath("") + "/regionShapes.txt");
-    //    if(file.exists()) { //<>//
-    //      desktop.open(file); //<>//
-    //    }
-    //  }catch(IOException e){
-        
-    //  }
+  //println(dataPath(""));
 
+  //try { //only do once
+  //    Desktop desktop = Desktop.getDesktop();
+  //    File file = new File(dataPath("") + "/regionShapes.txt");
+  //    if(file.exists()) { //<>//
+  //      desktop.open(file); //<>//
+  //    }
+  //  }catch(IOException e){
 
-
-  
-  
-  
-  
-  
-  
-  
+  //  }
 }
 public void gameSetupMenu() {
 
@@ -214,11 +211,11 @@ public void displayBoard() {
     buttons[6].display();
     buttons[7].display();
   }
-  if(choosingNumber){
+  if (choosingNumber) {
     buttons[8].display();
     test.display();
   }
-  if(selectStructure){
+  if (selectStructure) {
     buttons[10].display();
     buttons[9].display();
     buttons[11].display();
@@ -233,9 +230,23 @@ public Region selectRegion() {
   return null;
 }
 public void advanceTurn() {
-  for(int i = 0; i < players.size(); ){
-    
+  //for(int i = 0; i < players.size(); i++ ){
+  //  if(!players.get(i).hasTroops()){
+
+  //  }
+  //}
+
+  for (Player p : players) {
+    if (!p.hasUnits()) {
+      players.remove(p);
+    }
   }
+  //if(players.size() == 1){  
+    
+ // }
+
+
+
   if (turn == players.size() - 1) {
     turn = 0;
     selectActions = true;
@@ -325,49 +336,68 @@ public Player playerInhabits(Region r) {
   }
   return null;
 }
-public void move() {
-
+public void move() { //<>//
+ //<>//
   if (selectingRegion) {
     text("Select a Region to Move", 20, 60);
     text("Troops Form", 20, 80);
     selectedRegion = selectRegion();
     if (selectedRegion != null) {
       if (players.get(turn).hasTroops(selectedRegion)) {
-         numberLimit = players.get(turn).troopsIn(selectedRegion);
-         selectingRegion = false;
-         choosingNumber = true;
-         
+        numberLimit = players.get(turn).troopsIn(selectedRegion);
+        selectingRegion = false;
+        choosingNumber = true;
       }
     }
-  }else if(choosingNumber){
+  } else if (choosingNumber) {
     text("Select the number of", 20, 60);
     text("Troops to Move", 20, 80);
-    
-    if(buttons[8].released()){
+
+    if (buttons[8].released()) {
       choosingNumber = false;
       selectingRegion2 = true;
     }
-    
-  }else if(selectingRegion2){
-    text("Select a Region to Move", 20, 60);
+  } else if (selectingRegion2) {
+    text("Select a Region to Move", 20, 60); //<>//
     text("Troops to", 20, 80); //<>//
     selectedRegion2 = selectRegion();
-    if(selectedRegion2 != null){
+    if (selectedRegion2 != null) {
       if (selectedRegion2.nextTo(selectedRegion)) {
-        if(playerInhabits(selectedRegion2) == players.get(turn) || playerInhabits(selectedRegion2) == null ){
-         
-         players.get(turn).moveTroops(selectedRegion,selectedRegion2, test.getNumber());
-         selectingRegion2 = false;
-         advanceTurn();
-         
-      }else {
-      //conflict
+        if (playerInhabits(selectedRegion2) == players.get(turn) || playerInhabits(selectedRegion2) == null ) {
+
+          players.get(turn).moveTroops(selectedRegion, selectedRegion2, test.getNumber());
+          selectingRegion2 = false;
+          advanceTurn();
+        } else {
+          conflict();
+          selectingRegion2 = false;
+          advanceTurn();
+        }
       }
-     }
     }
-      
   }
 }
+
+public void conflict(){ // test
+  int attackingTroops = test.getNumber();
+  int defendingTroops = playerInhabits(selectedRegion2).troopsIn(selectedRegion2);
+  while(attackingTroops > 0 && defendingTroops > 0){
+    int attackerHits = attackHits(attackingTroops);
+    int defenderHits = attackHits(defendingTroops );
+    attackingTroops -= defenderHits;
+    defendingTroops -= attackerHits;
+  }
+  players.get(turn).trainTroops(selectedRegion, -test.getNumber());
+  playerInhabits(selectedRegion2).trainTroops(selectedRegion2,defendingTroops - playerInhabits(selectedRegion2).troopsIn(selectedRegion2) );
+ 
+  
+  if(attackingTroops > 0 && defendingTroops < 1){
+    playerInhabits(selectedRegion2).removeStrctrues(selectedRegion2);
+    players.get(turn).trainTroops(selectedRegion2, attackingTroops);
+  }
+  
+}
+
 public void train() {
   if (selectingRegion) {
     text("Select a Region to Train", 20, 60);
@@ -381,12 +411,12 @@ public void train() {
         numberLimit = int(players.get(turn).getWheat()/2);
       }
     }
-  }else if(choosingNumber){ 
+  } else if (choosingNumber) { 
     text("Select the number of", 20, 60);
     text("Troops to Train", 20, 80);
-    
-    if(buttons[8].released()){
-      if(test.getNumber() > 0){
+
+    if (buttons[8].released()) {
+      if (test.getNumber() > 0) {
         players.get(turn).trainTroops(selectedRegion, test.getNumber());
         players.get(turn).setWheat(players.get(turn).getWheat() - 2*test.getNumber() );
       }
@@ -407,31 +437,30 @@ public void build() {
         selectStructure = true;
       }
     }
-  }else if(selectStructure){
+  } else if (selectStructure) {
     text("Select a Region to", 20, 60);
     text("Build in", 20, 80);
-    if(buttons[9].released() ){ // pay
-      players.get(turn).build(new Village(players.get(turn).getColor(), selectedRegion, 1));
-      players.get(turn).setWood(players.get(turn).getWood() - 2 );
-      players.get(turn).setWheat(players.get(turn).getWheat() - 1 );
-      selectStructure = false;
-      advanceTurn();
-      
-    }else if(buttons[10].released()){ // pay
-      players.get(turn).build(new City(players.get(turn).getColor(), selectedRegion, 1));
-      players.get(turn).setOre(players.get(turn).getOre() - 4 );
-      players.get(turn).setWood(players.get(turn).getWood() - 3 );
-      selectStructure = false;
-      advanceTurn();
-    }else if(buttons[11].released()){
+    if (buttons[9].released() ) { // pay
+      if ( players.get(turn).getWheat() > 0 && players.get(turn).getWood() > 1 ) {
+        players.get(turn).build(new Village(players.get(turn).getColor(), selectedRegion, 1));
+        players.get(turn).setWood(players.get(turn).getWood() - 2 );
+        players.get(turn).setWheat(players.get(turn).getWheat() - 1 );
+        selectStructure = false;
+        advanceTurn();
+      }
+    } else if (buttons[10].released()) { // pay
+      if ( players.get(turn).getOre() > 3 && players.get(turn).getWood() > 2 ) {
+        players.get(turn).build(new City(players.get(turn).getColor(), selectedRegion, 1));
+        players.get(turn).setOre(players.get(turn).getOre() - 4 );
+        players.get(turn).setWood(players.get(turn).getWood() - 3 );
+        selectStructure = false;
+        advanceTurn();
+      }
+    } else if (buttons[11].released()) {
       selectStructure = false;
       advanceTurn();
     }
   }
-  
-  
-  
-  
 }
 public void mouseReleased() {
   if (menu.equals("board")) {
@@ -449,20 +478,27 @@ public void mouseReleased() {
       }
     }
   }
-  
-  if(choosingNumber){
-    if(test.upDepressed()){
-      if(test.getNumber() < numberLimit){
+
+  if (choosingNumber) {
+    if (test.upDepressed()) {
+      if (test.getNumber() < numberLimit) {
         test.addNumber(1);
       }
     }
-    if(test.downDepressed()){
-      if(test.getNumber() > 0)
-      
-      test.addNumber(-1);
+    if (test.downDepressed()) {
+      if (test.getNumber() > 0)
+
+        test.addNumber(-1);
     }
   }
-  
-  
-  
 }
+
+  public int attackHits(int times){
+    int hits = 0;
+    for(int i = 0; i < times; i++){
+      if(round(random(1,diceSides+.1)) >= hitLimit ){
+        hits ++;
+      }
+    }
+    return hits;
+  }
