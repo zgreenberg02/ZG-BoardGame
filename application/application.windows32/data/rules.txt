@@ -1,0 +1,59 @@
+Kingdoms and Knights Game Rules
+
+How to Win
+   - A player wins when all other players are eliminated, thus becoming king of the realm.
+   - A player is eliminated when they have no remaining knights or structures (villages or castles).
+
+How to Play
+   - Each player in turn will choose a starting region.
+   - 2 to 4 players are allowed.
+   - 3 knights and 1 village will be placed in the chosen region.
+   - Then each player will take their turns according to the phases described below.
+
+	Collect resources - (done automatically)
+	Choose one action per turn from the following list:
+	Move and conduct combat
+	Research technologies
+	Upgrade villages 
+	Train knights
+	Collect resources again
+
+Description and rules of the game actions:
+	Collecting resources
+	   - Each player will collect resources from each village/castle every turn. 
+	   - Villages collect 1 resource and castles collect 2 resources. 
+	   - The resource collected corresponds with the region type from which you are collecting. 
+		Resource types are:
+		   - Wheat
+		   - Ore
+		   - Wood 
+
+	On their turn, each player may chose one (1) of the following actions to do.
+
+		Move and conduct combat
+		   - Each knight can move a total distance of one (1) territory from their current location. 
+		   - You are permitted to move one group of Knights.
+		   - If you move into a territory occupied by at least one enemy knight, you conduct combat.
+
+			Combat - (done automatically)
+			   -The attacker and defender roll for each troop.  
+			   - Rolls of 8 or above (on a 10 sided die) are a hit. 
+			   - After boths players roll, total hits are counted. 
+			   - Each hit destroys a single knight.
+			   - The damaged troops are removed from the board.
+			   - Rounds of combat continue until only one player’s knights remain in the territory.
+
+	Build villages and castles
+	   - You may only build one strucutre per turn.
+
+		Build a village
+ 		   - Turn in one wheat and two wood.
+		   - Place it in a territory containing at least one of your knights.
+		
+		Building a castle
+		   - Turn in four ore and three wood .  
+    		   - Place it in a territory containing at least one of your knights.
+
+	Train Knights
+	   - Choose one region containing at least one structure to produce knights.  
+	   - You must turn in 2 wheat for every knight you wish to produce.

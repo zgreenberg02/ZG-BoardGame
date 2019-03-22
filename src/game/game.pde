@@ -156,6 +156,12 @@ public void startMenu() {
   
   if (buttons[0].released()) {
     menu = "board";
+    if(selectPlayers.getNumber() == 2){
+      players.remove(3);
+      players.remove(2);
+    }else if(selectPlayers.getNumber() == 3){
+      players.remove(2);
+    }
   } else if (buttons[1].released()) {
     rules();
   }
@@ -215,13 +221,13 @@ public void displayBoard() {
   }
   buttons[2].display();
   if (buttons[2].released()) {
-    rules();
+    rules(); //<>//
     delay(0);
   }
 }
 public Region selectRegion() {
   for (Region r : regions) {
-    if (r.released()) { //<>//
+    if (r.released()) {
       return r;
     }
   }
