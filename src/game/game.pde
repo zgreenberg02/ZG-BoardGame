@@ -1,10 +1,4 @@
-//  instructions //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
-// costs
-
-// conflict -  happens automotically, no retreat - no cty village combat
-// ask kaptee about ==
-// choosing number of players
-
+ //<>// //<>//
 
 
 import java.awt.Desktop;
@@ -12,10 +6,11 @@ import java.io.File;
 import java.io.IOException;
 
 PImage img;
-String menu = "board";
+String menu = "start";
 Region[] regions = new Region[18];
-Button[] buttons = new Button[12];
+Button[] buttons = new Button[11];
 Spinner selectNumber;
+Spinner selectPlayers;
 ArrayList <Player> players  = new ArrayList <Player>();
 PShape shape;
 boolean started = false;
@@ -40,19 +35,23 @@ public void setup() {
   img = loadImage("gameBoard.jpg");
   img.resize(0, height);
   createRegions();
-  players.add(new Player("Player 1", color(255, 0, 0)));
-  players.add(new Player("Player 2", color(0, 255, 0)));
+  players.add(new Player("Player 1", color(#F05244)));
+  players.add(new Player("Player 2", color(#63E558)));
+  players.add(new Player("Player 3", color(#5968E8)));
+  players.add(new Player("Player 4", color(#F0E744)));
 
-  for (int i = 0; i < 3; i++) {
-    buttons[i] = new Button(width/2, height/2 + 50 + 115 *i, 300, 50, 20, color(0), color(150), color(100));
-  }
-  buttons[0].setText("New Game", color(255, 0, 0), 30);
-  buttons[1].setText("How To Play", color(255, 0, 0), 30);
-  buttons[2].setText(" ", color(255, 0, 0), 30);
+  buttons[0] = new Button(width/2, height/2 + 95, 300, 50, 20, color(0), color(150), color(100));
+  buttons[0].setText("Start Game", color(255, 0, 0), 30);
+  //width/2, height/2 + 50 + 115 *i, 300, 50, 20, color(0), color(150), color(100)
+  buttons[1] = new Button(width/2, height/2 + 280, 300, 50, 20, color(0), color(150), color(100));
+  buttons[1].setText("Rules", color(255, 0, 0), 30);
+
+  buttons[2] = new Button(90, 670, 130, 30, 20, color(0), color(150), color(100));
+  buttons[2].setText("Rules", color(255), 17);
   buttons[3] = new Button(width/2, height - 100, 130, 30, 20, color(0), color(150), color(100));
   buttons[3].setText("Return To Start", color(255, 0, 0), 15);
-  buttons[4] = new Button(width/2, height - 50, 130, 30, 20, color(0), color(150), color(100));
-  buttons[4].setText("Start", color(255, 0, 0), 15);
+  buttons[4] = new Button(90, 200, 130, 30, 20, color(0), color(150), color(100));
+  buttons[4].setText("None", color(255), 15);
   buttons[5] = new Button(90, 105, 130, 30, 20, color(0), color(150), color(100));
   buttons[5].setText("Move Troops", color(255), 15);
   buttons[6] = new Button(90, 145, 130, 30, 20, color(0), color(150), color(100));
@@ -65,25 +64,22 @@ public void setup() {
   buttons[9].setText("Village", color(255), 15);
   buttons[10] = new Button(90, 160, 130, 30, 20, color(0), color(150), color(100));
   buttons[10].setText("Castle", color(255), 15);
-  buttons[11] = new Button(90, 200, 130, 30, 20, color(0), color(150), color(100));
-  buttons[11].setText("None", color(255), 15);
+
   selectNumber = new Spinner(50, 120);
+  selectPlayers = new Spinner(550, 550);
+  selectPlayers.setNumber(2);
+  numberLimit = 4;
 }
 
 public void draw() {
-  displayBoard();
   if (menu.equals("start")) {
     startMenu();
-  } else if (menu.equals("setup")) {
-    gameSetupMenu();
-  } else if (menu.equals("board")) {
+  }else if (menu.equals("board")) {
     displayBoard();
     game();
     for (Region r : regions) {
       r.setReleased(false);
     }
-  } else if (menu.equals("instructions")) {
-    instructionsMenu();
   } else if (menu.equals("end")) {
     displayBoard();
     end();
@@ -147,14 +143,21 @@ public void startMenu() {
   textAlign(CENTER, CENTER);
   fill(255, 0, 0);
   textSize(60);
-  text("KINGDOMS AND KNIGHTS", width/2, 200);
-  for (int i = 0; i < 3; i++) {
-    buttons[i].display();
-  }
+  text("KINGDOMS AND KNIGHTS", width/2, 230);
+  fill(0);
+  textSize(20);
+  textAlign(RIGHT, CENTER);
+  text("Number of Players: ",520, 545);
+  buttons[0].display();
+  buttons[1].display();
+
+  
+  selectPlayers.display();
+  
   if (buttons[0].released()) {
-    menu = "setup";
+    menu = "board";
   } else if (buttons[1].released()) {
-    menu = "instructions";
+    rules();
   }
 }
 public void end() {
@@ -164,52 +167,28 @@ public void end() {
   if (players.size() == 0) {
     text("It is a tie", width/2, 15);
   } else {
+    fill(players.get(turn).getColor());
     text(players.get(turn).getName() + " Wins", width/2, 15);
   }
 }
-public void instructions(){
- println(dataPath(""));
-
-    try { 
-      Desktop desktop = Desktop.getDesktop();
-      File file = new File(dataPath("") + "/regionShapes.txt");
-      if(file.exists()) {
-        desktop.open(file);
-      }
-    }catch(IOException e){
+public void rules() {
+  try { 
+    Desktop desktop = Desktop.getDesktop();
+    File file = new File(dataPath("") + "/rules.txt");
+    if (file.exists()) {
+      desktop.open(file);
     }
-}
-public void instructionsMenu() {
-  background(200);
-  buttons[3].display();
-  textAlign(CENTER, CENTER);
-  fill(0, 0, 0);
-  textSize(40);
-  text("How to Play", width/2, 60);
-  textSize(15);
-  text("(add rules here)", width/2, 150);
-  rectMode(CENTER);
-  rect(width/2, 90, 350, 4);
-
-  if (buttons[3].released()) {
-    menu = "start";
   }
-}
-public void gameSetupMenu() {
-
-  background(200);
-  buttons[4].display();
-  if (buttons[4].released()) {
-    menu = "board";
+  catch(IOException e) {
   }
 }
 
 public void displayBoard() {
   image(img, 0, 0);
   for (Region r : regions) {
-    if(r == selectedRegion){
-      r.setSelected(true); //<>//
-    }else{
+    if (r == selectedRegion) {
+      r.setSelected(true);
+    } else {
       r.setSelected(false);
     }
   }
@@ -234,11 +213,15 @@ public void displayBoard() {
     buttons[9].display();
     buttons[11].display();
   }
-  buttons[12].display();
+  buttons[2].display();
+  if (buttons[2].released()) {
+    rules();
+    delay(0);
+  }
 }
 public Region selectRegion() {
   for (Region r : regions) {
-    if (r.released()) {
+    if (r.released()) { //<>//
       return r;
     }
   }
@@ -280,7 +263,9 @@ public void game() {
   textAlign(LEFT, CENTER);
   textSize(18);
   if (!started) { 
+    fill(players.get(turn).getColor());
     text(players.get(turn).getName(), 20, 40);
+    fill(255);
     if (selectingError) {
       text("Select a Different Region", 20, 80);
       text("Already Selected", 20, 60);
@@ -306,8 +291,32 @@ public void game() {
       }
     }
   } else {
+
+
+    fill(0);
+    noStroke();
+    rectMode(CENTER);
+    rect(750, 690, 15, 15);
+    int x = 750;
+    int y = 650;
+    triangle(x, y-9, x+9, y+9, x-9, y+9);
+    ellipse(750, 620, 15, 15);
+    fill(255);
+    textAlign(LEFT, CENTER);
+    textSize(18);
+    text("Costs", 795, 588);
+    textSize(14);
+    text("- Troop:  2 Wheat", 760, 617);
+    text("- Village:  1 Wheat", 760, 647);
+    text("2 Wood", 830, 664);
+    text("- Castle:  3 Wood", 760, 687);
+    text("4 Ore", 827, 704);
+
+    textSize(18);
+    fill(players.get(turn).getColor());
     text(players.get(turn).getName(), 20, 40);
     text(players.get(turn).getName() +" Recources", 730, 40);
+    fill(255);
     text("Wheat:  " + players.get(turn).getWheat(), 767, 73);
     text("Wood:   " + players.get(turn).getWood(), 767, 95);
     text("Ore:      " + players.get(turn).getOre(), 767, 117);
@@ -315,7 +324,7 @@ public void game() {
     strokeWeight(4);
 
     line(730, 57, 895, 57);
-
+    line(733, 602, 895, 602);
 
     if (selectActions) {
       text("Select an Action", 20, 60);
@@ -468,7 +477,7 @@ public void build() {
       }
     } else if (buttons[10].released()) {
       if ( players.get(turn).getOre() > 3 && players.get(turn).getWood() > 2 ) {
-        players.get(turn).build(new City(players.get(turn).getColor(), selectedRegion, 1));
+        players.get(turn).build(new Castle(players.get(turn).getColor(), selectedRegion, 1));
         players.get(turn).setOre(players.get(turn).getOre() - 4 );
         players.get(turn).setWood(players.get(turn).getWood() - 3 );
         selectStructure = false;
@@ -486,6 +495,17 @@ public void mouseReleased() {
       if (r.depressed()) {
         r.setReleased(true);
       }
+    }
+  }else if(menu.equals("start")){
+    if (selectPlayers.upDepressed()) {
+      if (selectPlayers.getNumber() < numberLimit) {
+        selectPlayers.addNumber(1);
+      }
+    }
+    if (selectPlayers.downDepressed()) {
+      if (selectPlayers.getNumber() > 2)
+
+        selectPlayers.addNumber(-1);
     }
   }
 

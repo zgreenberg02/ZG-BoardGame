@@ -9,8 +9,8 @@ public class Region {
   private boolean depressed = false;
   private boolean released = false;
   private boolean selected;
-  private int cityX;
-  private int cityY;
+  private int CastleX;
+  private int CastleY;
   private int troopX;
   private int troopY;
   private int villageX;
@@ -47,7 +47,7 @@ public class Region {
       depressed = false;
       noStroke();
     }
-    if(selected){ //<>//
+    if(selected){
       stroke(0); //<>//
       strokeWeight(3);
     }
@@ -86,9 +86,9 @@ public class Region {
       return false;
     }
   }
-  public void setUnitDisplayCords(int cityX,int cityY,int troopX,int troopY,int villageX,int villageY) {
-    this.cityX = cityX;
-    this.cityY = cityY;
+  public void setUnitDisplayCords(int CastleX,int CastleY,int troopX,int troopY,int villageX,int villageY) {
+    this.CastleX = CastleX;
+    this.CastleY = CastleY;
     this.troopX = troopX;
     this.troopY = troopY;
     this.villageX = villageX;
@@ -104,11 +104,11 @@ public class Region {
     return troopY;
   }
   
-  public int getCityX(){
-    return cityX;
+  public int getCastleX(){
+    return CastleX;
   }
-  public int getCityY(){
-    return cityY;
+  public int getCastleY(){
+    return CastleY;
   }
   public int getVillageX(){
     return villageX;

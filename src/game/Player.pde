@@ -6,7 +6,7 @@ public class Player {
   private color c;
   private int wood;
   private int ore;
-  private int wheat = 20;
+  private int wheat;
   private ArrayList <Troop> troops = new ArrayList<Troop>();
   private ArrayList <Structure> structures = new ArrayList<Structure>();
 
@@ -45,21 +45,21 @@ public class Player {
       if (s != null) {
         switch (s.collectRecources()) {
         case "wheat":
-          if (s instanceof City) {
+          if (s instanceof Castle) {
             wheat+=2*s.getQuantity();
           } else {
             wheat+= s.getQuantity();
           }
           break;
         case "wood":
-          if (s instanceof City) {
+          if (s instanceof Castle) {
             wood+=2*s.getQuantity();
           } else {
             wood+=s.getQuantity();
           }
           break;
         case "ore":
-          if (s instanceof City) {
+          if (s instanceof Castle) {
             ore+=2*s.getQuantity();
           } else {
             ore+= s.getQuantity();
