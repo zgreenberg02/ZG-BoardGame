@@ -6,6 +6,7 @@ How to Win
 
 How to Play
    - Each player in turn will choose a starting region.
+   - Each player will start with 4 of each resource
    - 2 to 4 players are allowed.
    - 3 knights and 1 village will be placed in the chosen region.
    - Then each player will take their turns according to the phases described below.

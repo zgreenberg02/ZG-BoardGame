@@ -217,7 +217,7 @@ public void displayBoard() {
   if (selectStructure) {
     buttons[10].display();
     buttons[9].display();
-    buttons[11].display();
+    buttons[4].display();
   }
   buttons[2].display();
   if (buttons[2].released()) {
@@ -373,7 +373,7 @@ public void move() {
 
   if (selectingRegion) {
     text("Select a Region to Move", 20, 60);
-    text("Troops Form", 20, 80);
+    text("Troops From", 20, 80);
     selectedRegion = selectRegion();
     if (selectedRegion != null) {
       if (players.get(turn).hasTroops(selectedRegion)) {
@@ -471,8 +471,8 @@ public void build() {
       }
     }
   } else if (selectStructure) {
-    text("Select a Region to", 20, 60);
-    text("Build in", 20, 80);
+    text("Select a Structure to", 20, 60);
+    text("Build", 20, 80);
     if (buttons[9].released() ) {
       if ( players.get(turn).getWheat() > 0 && players.get(turn).getWood() > 1 ) {
         players.get(turn).build(new Village(players.get(turn).getColor(), selectedRegion, 1));
@@ -489,7 +489,7 @@ public void build() {
         selectStructure = false;
         advanceTurn();
       }
-    } else if (buttons[11].released()) {
+    } else if (buttons[4].released()) {
       selectStructure = false;
       advanceTurn();
     }

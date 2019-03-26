@@ -4,9 +4,9 @@ public class Player {
 
   private String name;
   private color c;
-  private int wood;
-  private int ore;
-  private int wheat;
+  private int wood = 4;
+  private int ore = 4;
+  private int wheat = 4;
   private ArrayList <Troop> troops = new ArrayList<Troop>();
   private ArrayList <Structure> structures = new ArrayList<Structure>();
 
