@@ -1,6 +1,6 @@
 # Board Game
 
-Project for IB Comp Sci IA 2019:
+Project for IB Comp Sci IA 2018-2019:
 Computer Version of a Board Game.  This program will allow players to play the board game Kingdoms and Knights on the computer.
 <br /> 
 
