@@ -18,10 +18,7 @@ import java.io.InputStream;
 import java.io.OutputStream; 
 import java.io.IOException; 
 
-public class game extends PApplet {
-
-
-
+public class boardGame extends PApplet {
 
 
 
@@ -239,7 +236,7 @@ public void displayBoard() {
   if (selectStructure) {
     buttons[10].display();
     buttons[9].display();
-    buttons[11].display();
+    buttons[4].display();
   }
   buttons[2].display();
   if (buttons[2].released()) {
@@ -395,7 +392,7 @@ public void move() {
 
   if (selectingRegion) {
     text("Select a Region to Move", 20, 60);
-    text("Troops Form", 20, 80);
+    text("Troops From", 20, 80);
     selectedRegion = selectRegion();
     if (selectedRegion != null) {
       if (players.get(turn).hasTroops(selectedRegion)) {
@@ -493,8 +490,8 @@ public void build() {
       }
     }
   } else if (selectStructure) {
-    text("Select a Region to", 20, 60);
-    text("Build in", 20, 80);
+    text("Select a Structure to", 20, 60);
+    text("Build", 20, 80);
     if (buttons[9].released() ) {
       if ( players.get(turn).getWheat() > 0 && players.get(turn).getWood() > 1 ) {
         players.get(turn).build(new Village(players.get(turn).getColor(), selectedRegion, 1));
@@ -511,7 +508,7 @@ public void build() {
         selectStructure = false;
         advanceTurn();
       }
-    } else if (buttons[11].released()) {
+    } else if (buttons[4].released()) {
       selectStructure = false;
       advanceTurn();
     }
@@ -568,7 +565,6 @@ public int attackHits(int times) {
   }
   return hits;
 }
-
 public class Button {
   private int x ; // x position
   private int y; // y position
@@ -665,9 +661,9 @@ public class Player {
 
   private String name;
   private int c;
-  private int wood;
-  private int ore;
-  private int wheat;
+  private int wood = 4;
+  private int ore = 4;
+  private int wheat = 4;
   private ArrayList <Troop> troops = new ArrayList<Troop>();
   private ArrayList <Structure> structures = new ArrayList<Structure>();
 
@@ -1148,7 +1144,7 @@ public class Village extends Structure {
 }
   public void settings() {  size(927, 750); }
   static public void main(String[] passedArgs) {
-    String[] appletArgs = new String[] { "game" };
+    String[] appletArgs = new String[] { "boardGame" };
     if (passedArgs != null) {
       PApplet.main(concat(appletArgs, passedArgs));
     } else {
