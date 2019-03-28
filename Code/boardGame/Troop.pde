@@ -16,9 +16,6 @@ public class Troop {
   public void setLocation(Region location) {
     this.location = location;
   }
-  public Region getLocation(Region location) {
-    return location;
-  }
   public int getQuantity() {
     return quantity;
   }

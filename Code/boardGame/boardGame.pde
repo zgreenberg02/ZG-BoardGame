@@ -511,7 +511,6 @@ public void mouseReleased() {
         selectPlayers.addNumber(-1);
     }
   }
-
   for (Button b : buttons) {
     if (b != null) {
       if (b.depressed()) {

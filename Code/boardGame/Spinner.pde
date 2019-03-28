@@ -49,23 +49,6 @@ class Spinner {
     } else {
       downDepressed = false;
     }
-
-    //noStroke();
-    //if (depressed) {
-    //  fill(pressedColor);
-    //} else if (mouseX > x - w/2 && mouseX < x + w/2 && mouseY > y - h/2 && mouseY < y + h/2) {
-    //  fill(hoverColor);
-    //} else {
-    //  fill(c);
-    //}
-    //rectMode(CENTER);
-    //rect(x, y, w, h, r);
-    //textAlign(CENTER, CENTER);
-    //if (text != null) {
-    //  fill(textColor);
-    //  textSize(textSize);
-    //  text(text, x, y);
-    //}
   }
   public boolean upDepressed() {
     return upDepressed;
