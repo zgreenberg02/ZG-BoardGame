@@ -1,3 +1,5 @@
+
+
 Kingdoms and Knights Game Rules
 
 How to Win
@@ -17,7 +19,6 @@ How to Play
 	Research technologies
 	Upgrade villages 
 	Train knights
-	Collect resources again
 
 Description and rules of the game actions:
 	Collecting resources
