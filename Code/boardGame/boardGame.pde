@@ -1,15 +1,23 @@
-import java.awt.Desktop; //<>//
+/** //<>// //<>//
+ * The boardGame program is an application that
+ * allows users to play the game Kingdoms and Knights
+ * on the computer.
+ *
+ * @author  Zachary Greenberg
+ */
+
+
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 
-PImage img;
-String menu = "start";
+PImage img; // board image
+String menu = "start"; 
 Region[] regions = new Region[18];
 Button[] buttons = new Button[11];
 Spinner selectNumber;
-Spinner selectPlayers;
+Spinner selectPlayers; 
 ArrayList <Player> players  = new ArrayList <Player>();
-PShape shape;
 boolean started = false;
 boolean selectActions = false;
 boolean selectingError = false;
@@ -21,12 +29,17 @@ boolean selectingRegion2 = false;
 boolean choosingNumber = false;
 boolean selectStructure = false;
 int turn = 0;
-int numberLimit;
+int numberLimit; // max number spinner can be at
 Region selectedRegion;
 Region selectedRegion2;
-final int diceSides = 10;
-final int hitLimit = 8;
+final int diceSides = 10; // the number of sides the theoretical dice have - allows for similiar probibilty to the real game
+final int hitLimit = 8; // the number the dice has to be at or above to count as a hit during combat
 
+/**
+ * This method is used to setup the enviorment properties, create the regions, and 
+ * initialize the players, buttons and spinners.
+ * This method only runs once at the start of the program.
+ */
 public void setup() {
   size(927, 750);
   img = loadImage("gameBoard.jpg");
@@ -39,10 +52,8 @@ public void setup() {
 
   buttons[0] = new Button(width/2, height/2 + 95, 300, 50, 20, color(0), color(150), color(100));
   buttons[0].setText("Start Game", color(255, 0, 0), 30);
-  //width/2, height/2 + 50 + 115 *i, 300, 50, 20, color(0), color(150), color(100)
   buttons[1] = new Button(width/2, height/2 + 280, 300, 50, 20, color(0), color(150), color(100));
   buttons[1].setText("Rules", color(255, 0, 0), 30);
-
   buttons[2] = new Button(90, 670, 130, 30, 20, color(0), color(150), color(100));
   buttons[2].setText("Rules", color(255), 17);
   buttons[3] = new Button(width/2, height - 100, 130, 30, 20, color(0), color(150), color(100));
@@ -68,10 +79,15 @@ public void setup() {
   numberLimit = 4;
 }
 
+/**
+ * This method is for all of the actions that dont
+ * occur in the setup method.
+ * This method runs continuously after setup has executed.
+ */
 public void draw() {
   if (menu.equals("start")) {
     startMenu();
-  }else if (menu.equals("board")) {
+  } else if (menu.equals("board")) {
     displayBoard();
     game();
     for (Region r : regions) {
@@ -88,7 +104,12 @@ public void draw() {
   }
 }
 
-
+/**
+ * This method is used to create the regions.
+ * It reads information from text files stored in
+ * the data folder in order to get the specifications
+ * of each of the regions.
+ */
 public void createRegions() {
   int regionNumber = 0;
   for (int i = 0; i < regions.length; i++) {
@@ -133,8 +154,10 @@ public void createRegions() {
   }
 }
 
+/**
+ * This method is used to display the start menu
+ */
 public void startMenu() {
-
 
   background(200);
   textAlign(CENTER, CENTER);
@@ -144,25 +167,28 @@ public void startMenu() {
   fill(0);
   textSize(20);
   textAlign(RIGHT, CENTER);
-  text("Number of Players: ",520, 545);
+  text("Number of Players: ", 520, 545);
   buttons[0].display();
   buttons[1].display();
-
-  
   selectPlayers.display();
-  
+
   if (buttons[0].released()) {
     menu = "board";
-    if(selectPlayers.getNumber() == 2){
+    if (selectPlayers.getNumber() == 2) {
       players.remove(3);
       players.remove(2);
-    }else if(selectPlayers.getNumber() == 3){
+    } else if (selectPlayers.getNumber() == 3) {
       players.remove(2);
     }
   } else if (buttons[1].released()) {
     rules();
   }
 }
+
+/**
+ * This method is used to display the screen that 
+ * appears once a player has won and the game has ended.
+ */
 public void end() {
   textAlign(CENTER, CENTER);
   fill(0, 0, 0);
@@ -174,6 +200,10 @@ public void end() {
     text(players.get(turn).getName() + " Wins", width/2, 15);
   }
 }
+
+/**
+ * This method is used to open the rules page.
+ */
 public void rules() {
   try { 
     Desktop desktop = Desktop.getDesktop();
@@ -186,6 +216,11 @@ public void rules() {
   }
 }
 
+/**
+ * This method is used to display the board
+ * and all of its components while the game 
+ * is being played.
+ */
 public void displayBoard() {
   image(img, 0, 0);
   for (Region r : regions) {
@@ -218,10 +253,16 @@ public void displayBoard() {
   }
   buttons[2].display();
   if (buttons[2].released()) {
-    rules(); //<>//
+    rules();
     delay(0);
   }
 }
+
+/**
+ * This method is used to get the region
+ * that has just been pressed (and released).
+ * @return Region This returns the region that has just been released.
+ */
 public Region selectRegion() {
   for (Region r : regions) {
     if (r.released()) {
@@ -230,6 +271,25 @@ public Region selectRegion() {
   }
   return null;
 }
+
+/**
+ * This method is used to check which player inhabits a region.
+ * @param r this is the region that is being checked
+ * @return Player This returns the player that inhabits that region.
+ */
+public Player playerInhabits(Region r) {
+  for (Player p : players) {
+    if (p.inhabits(r)) {
+      return p;
+    }
+  }
+  return null;
+}
+
+/**
+ * This method is used advance the turn to
+ * the next player.
+ */
 public void advanceTurn() {
 
   selectedRegion = null;
@@ -261,6 +321,9 @@ public void advanceTurn() {
   build = false;
 }
 
+/**
+ * This method houses the logic for the actions that take place during the game.
+ */
 public void game() {
   fill(255);
   textAlign(LEFT, CENTER);
@@ -294,7 +357,6 @@ public void game() {
       }
     }
   } else {
-
 
     fill(0);
     noStroke();
@@ -358,14 +420,10 @@ public void game() {
     }
   }
 }
-public Player playerInhabits(Region r) {
-  for (Player p : players) {
-    if (p.inhabits(r)) {
-      return p;
-    }
-  }
-  return null;
-}
+
+/**
+ * This method houses the logic for the move action.
+ */
 public void move() {
 
   if (selectingRegion) {
@@ -408,6 +466,9 @@ public void move() {
   }
 }
 
+/**
+ * This method houses the logic for conflict (the battle that occurs when more than one player occupys a region).
+ */
 public void conflict() {
   int attackingTroops = selectNumber.getNumber();
   int defendingTroops = playerInhabits(selectedRegion2).troopsIn(selectedRegion2);
@@ -427,6 +488,25 @@ public void conflict() {
   }
 }
 
+/**
+ * This method is used calculate the number of troops are destroyed in combat.
+ * This method simulates the rolling of dice to determine how many troops are destroyed
+ * @param times  This is the number of times the dice is rolled
+ * @return int This returns the number of times the dice roll >= the hitLimit.
+ */
+public int attackHits(int times) {
+  int hits = 0;
+  for (int i = 0; i < times; i++) {
+    if (round(random(1, diceSides+.1)) >= hitLimit ) {
+      hits ++;
+    }
+  }
+  return hits;
+}
+
+/**
+ * This method houses the logic for the action of training troops
+ */
 public void train() {
   if (selectingRegion) {
     text("Select a Region to Train", 20, 60);
@@ -455,6 +535,10 @@ public void train() {
     }
   }
 }
+
+/**
+ * This method houses the logic for the building action
+ */
 public void build() {
   if (selectingRegion) {
     text("Select a Region to", 20, 70);
@@ -492,6 +576,11 @@ public void build() {
     }
   }
 }
+
+/**
+ * This method is used detect when the mouse is released.
+ * The method is automaticly called when the mouse is released.
+ */
 public void mouseReleased() {
   if (menu.equals("board")) {
     for (Region r : regions) {
@@ -499,7 +588,7 @@ public void mouseReleased() {
         r.setReleased(true);
       }
     }
-  }else if(menu.equals("start")){
+  } else if (menu.equals("start")) {
     if (selectPlayers.upDepressed()) {
       if (selectPlayers.getNumber() < numberLimit) {
         selectPlayers.addNumber(1);
@@ -531,14 +620,4 @@ public void mouseReleased() {
         selectNumber.addNumber(-1);
     }
   }
-}
-
-public int attackHits(int times) {
-  int hits = 0;
-  for (int i = 0; i < times; i++) {
-    if (round(random(1, diceSides+.1)) >= hitLimit ) {
-      hits ++;
-    }
-  }
-  return hits;
 }

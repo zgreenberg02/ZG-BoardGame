@@ -1,5 +1,8 @@
 import java.util.Iterator;
 
+/**
+ * Represents one of the players
+ */
 public class Player {
 
   private String name;
@@ -10,36 +13,97 @@ public class Player {
   private ArrayList <Troop> troops = new ArrayList<Troop>();
   private ArrayList <Structure> structures = new ArrayList<Structure>();
 
+  /**
+   * Constructs a player.
+   * @param name name of the player
+   * @param c color of the player
+   */
   public Player(String name, color c) {
     this.name = name;
     this.c = c;
   }
-  public String getName(){
+
+  /**
+   * Gets the name of the player.
+   * @return String name of the player
+   */
+  public String getName() {
     return name;
   }
+
+  /**
+   * Gets the color of the player.
+   * @return color color of the player
+   */
   public color getColor() {
     return c;
   }
+
+  /**
+   * Gets the amount of wood the player has.
+   * @return int amount of wood
+   */
   public int getWood() {
     return wood;
   }
+
+  /**
+   * Sets the amount of wood the player has.
+   * @param wood amount of wood
+   */
   public void setWood(int wood) {
     this.wood = wood;
   }
+
+  /**
+   * Gets the amount of ore the player has.
+   * @return int amount of ore
+   */
   public int getOre() {
     return ore;
   }
+
+  /**
+   * Sets the amount of ore the player has.
+   * @param ore amount of ore
+   */
   public void setOre(int ore) {
     this.ore = ore;
   }
+
+  /**
+   * Gets the amount of wheat the player has.
+   * @return int amount of wheat
+   */
   public int getWheat() {
     return wheat;
   }
+
+  /**
+   * Sets the amount of wheat the player has.
+   * @param wheat amount of wheat
+   */
   public void setWheat(int wheat) {
     this.wheat = wheat;
   }
-  public void move(Troop troop, int quantity, Region location) {
+
+  /**
+   * Moves troops.
+   * @param r1 region to move from
+   * @param r2 region to move to
+   * @param num number of troops to move
+   */
+  public void moveTroops(Region r1, Region r2, int num ) {
+    if (num > 0) {
+      trainTroops(r1, -num);
+      trainTroops(r2, num);
+    }
   }
+
+  /**
+   * Collects recources from the regions with structures.
+   * Called at the begining of a players turn.
+   */
   public void collectRecources() {
     for (Structure s : structures) {
       if (s != null) {
@@ -69,6 +133,11 @@ public class Player {
       }
     }
   }
+
+  /**
+   * Builds a structure.
+   * @param building the structrue that will be built
+   */
   public void build(Structure building) {
     boolean same = false;
     for (Structure s : structures) {
@@ -82,21 +151,28 @@ public class Player {
     }
   }
 
+  /**
+   * Removes all of the structures in a region
+   * @param r region to remove the structures from
+   */
   public void removeStructures(Region r) {
     Iterator itr = structures.iterator();
-     while (itr.hasNext()) {
+    while (itr.hasNext()) {
       Structure s = (Structure)itr.next();
       if (s.getLocation() == r) {
         itr.remove();
       }
     }
-
   }
 
-
+  /**
+   * Trains more troops.
+   * @param location region to train the troops in
+   * @param quantity number of troops to train
+   */
   public void trainTroops(Region location, int quantity) {
     boolean same = false;
-    
+
     for (Troop t : troops) {
       if (t.getLocation() == location && !same) {
         t.addTroops(quantity);
@@ -114,13 +190,13 @@ public class Player {
       }
     }
   }
-  public void moveTroops(Region r1, Region r2, int num ) {
-    if (num > 0) {
-      trainTroops(r1, -num);
-      trainTroops(r2, num);
-    }
-  }
 
+
+  /**
+   * Checks if the player inhabits a certain region
+   * @param r region it checks
+   * @return boolean return if the player inhabits the region.
+   */
   public boolean inhabits(Region r) {
     if (hasTroops(r)|| hasStructuresIn(r)) {
       return true;
@@ -128,6 +204,12 @@ public class Player {
       return false;
     }
   }
+
+  /**
+   * Checks if the player has troops in a certain region
+   * @param r region it checks
+   * @return boolean return if the player has troops in the region
+   */
   public boolean hasTroops(Region r) {
     for (Troop t : troops) {
       if (t.getLocation() == r ) {
@@ -136,6 +218,12 @@ public class Player {
     }
     return false;
   }
+
+  /**
+   * Gets the number of troops in a region
+   * @param r region it checks
+   * @return int number of troops the player has in the region
+   */
   public int troopsIn(Region r) {
     int num = 0;
     for (Troop t : troops) {
@@ -145,6 +233,12 @@ public class Player {
     }
     return num;
   }
+
+  /**
+   * Checks if the player has structures in a certain region
+   * @param r region it checks
+   * @return boolean return if the player has structures in the region
+   */
   public boolean hasStructuresIn(Region r) {
     for (Structure s : structures) {
       if (s.getLocation() == r ) {
@@ -153,28 +247,46 @@ public class Player {
     }
     return false;
   }
+
+  /**
+   * Checks if the player has any structures
+   * @return boolean return if the player has structures
+   */
   public boolean hasStructures() {
-    
-      if (structures.isEmpty()) {
-        return false;
-      }
+
+    if (structures.isEmpty()) {
+      return false;
+    }
     return true;
   }
+
+  /**
+   * Checks if the player has troops
+   * @return boolean return if the player has troops
+   */
   public boolean hasTroops() {
-    
-      if (troops.isEmpty()) {
-        return false;
-      }
+
+    if (troops.isEmpty()) {
+      return false;
+    }
     return true;
   }
+
+  /**
+   * Checks if the player has troops or units
+   * @return boolean return if the player has troops or structures
+   */
   public boolean hasUnits() {
     if (troops.isEmpty() && structures.isEmpty() ) {
       return false;
-    }
-    else{
-    return true;
+    } else {
+      return true;
     }
   }
+
+  /**
+   * Displays the troops and structures a player owns
+   */
   public void displayUnits() {
     for (Structure s : structures) {
       s.display();

@@ -1,3 +1,6 @@
+/**
+ * Represents a button that can be pressed
+ */
 public class Button {
   private int x ; // x position
   private int y; // y position
@@ -13,6 +16,17 @@ public class Button {
   private int textSize;
   private boolean released;
 
+  /**
+   * Creates a button
+   * @param x x-coordinate of the center of the button
+   * @param y y-coordinate of the center of the button
+   * @param w width of the button
+   * @param h height of the button
+   * @param r radius of the rounded corners on the button
+   * @param c normal color of the button
+   * @param pressedColor color of the button while being pressed
+   * @param hovorColor color of the button while the mouse is over it (and it is not being pressed)
+   */
   public Button(int x, int y, int w, int h, int r, color c, color pressedColor, color hoverColor)
   {
     this.x = x;
@@ -24,14 +38,23 @@ public class Button {
     this.hoverColor = hoverColor;
     this.pressedColor = pressedColor;
   }
- // public Button(){}
 
+  /**
+   * Used to set the text that appears in the button.
+   * @param text the text that will appear in the button
+   * @param textColor color of the text
+   * @param textSize size of the text
+   */
   public void setText(String text, color textColor, int textSize) {
     this.text = text;
     this.textColor = textColor;
     this.textSize = textSize;
   }
 
+  /**
+   * Used to display the button and detect if the mouse is over it
+   * or if it is depressed
+   */
   public void display() {
     if (mousePressed &&mouseX > x - w/2 && mouseX < x + w/2 && mouseY > y - h/2 && mouseY < y + h/2) {
       depressed = true;
@@ -56,15 +79,28 @@ public class Button {
       text(text, x, y);
     }
   }
-  public boolean depressed(){
+
+  /**
+   * gets if it is depressed
+   * @return boolean returns depressed.
+   */
+  public boolean depressed() {
     return depressed;
   }
+
+  /**
+   * gets if it is released
+   * @return boolean returns released.
+   */
   public boolean released() {
     return released;
   }
+
+  /**
+   * Sets if the button is released
+   * @param released if the button is released or not
+   */
   public void setReleased(boolean released) {
     this.released = released;
   }
-  
-  
 }
