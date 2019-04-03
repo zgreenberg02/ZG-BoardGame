@@ -6,3 +6,6 @@ Computer Version of the board game Kingdoms and Knights.  This program will allo
 <img src="boardGame.png" alt="Running Application">
 <br> <br> 
 The Program takes in the players input and complets the players actions based on this input. The program automaticly completes actions that require no input such as rolling the dice during conflict.
+<br> <br> 
+Written in processing.
+
