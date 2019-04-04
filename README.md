@@ -1,7 +1,7 @@
 # Board Game
 
 Project for IB Comp Sci IA 2018-2019:
-Computer Version of the board game Kingdoms and Knights.  This program will allow players to play the board game Kingdoms and Knights on the computer.  Kingdoms and Knights is a strategy board game created by: Zach Greenberg, Jackson Elder, and Hayden Soelberg
+Computer Version of the board game Kingdoms and Knights.  This program allows players to play the board game Kingdoms and Knights on the computer.  Kingdoms and Knights is a strategy board game created by: Zach Greenberg, Jackson Elder, and Hayden Soelberg
 <br> <br> 
 <img src="boardGame.png" alt="Running Application">
 <br> <br> 
