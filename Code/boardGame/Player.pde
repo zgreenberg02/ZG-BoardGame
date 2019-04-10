@@ -156,11 +156,13 @@ public class Player {
    * @param r region to remove the structures from
    */
   public void removeStructures(Region r) {
-    Iterator itr = structures.iterator();
-    while (itr.hasNext()) {
-      Structure s = (Structure)itr.next();
-      if (s.getLocation() == r) {
-        itr.remove();
+    if( ! structures.isEmpty() ){
+      Iterator itr = structures.iterator();
+      while (itr.hasNext()) {
+        Structure s = (Structure)itr.next();
+        if (s.getLocation() == r) {
+          itr.remove();
+        }
       }
     }
   }
